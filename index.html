@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <script src="https://cdn.tailwindcss.com/"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/game.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    
+<label class="inline-flex  items-center cursor-pointer">
+    <input type="checkbox" value="" class="sr-only peer">
+    <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+    <span class="ms-3 text-sm font-medium text-gray-900 bg-black:text-gray-300">Modo oscuro</span>
+  </label>
+</head>
+<h1  class= "mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-orange md:text-center">Juego de <span class="text-blue-600 dark:text-blue-500">Piedra papel y tijera</h1>
+    <!-- Botón para abrir el modal -->
+    <div class="flex justify-center mt-4"> <!-- Flexbox para centrar -->
+        <button id="open-modal" class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-white bg-cyan-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300">
+            Leer las Reglas
+            <!-- SVG para la flecha -->
+            <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </button>
+    </div>
+
+  <!-- Modal de Reglas -->
+  <div id="rules-modal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-1/2">
+        <!-- Modal header -->
+        <div class="flex justify-between items-center">
+            <h3 class="text-xl font-medium text-gray-900">Reglas del Juego</h3>
+            <button id="close-modal" class="text-gray-500 hover:text-gray-900">X</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="mt-4">
+            <ul class="list-disc pl-5">
+                <li>Piedra gana contra Tijera.</li>
+                <li>Tijera gana contra Papel.</li>
+                <li>Papel gana contra Piedra.</li>
+                <li>Si ambos eligen la misma opción, es un empate.</li>
+                <li>Si te llamas yilbert ya ganaste.❤️ </li>
+            </ul>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="flex justify-end">
+            <button id="close-modal2" class="px-5 py-2.5 bg-blue-700 text-white rounded-lg hover:bg-blue-800">Entendido</button>
+        </div>
+    </div>
+</div>
+<body class="bg-gray-100 text-gray-800 -screen">
+    <div class="flex justify-center items-center h-full space-x-10">
+        <!-- Div para Usuario -->
+        <div class="text-center" id="user-section">
+            <h1 class="mb-2 text-4xl font-extrabold tracking-tight text-gray-900">Usuario</h1>
+            <img src="images/user.png" alt="Imagen de usuario" class="w-32 h-32 mx-auto">
+            <div class="mt-4">
+                <!-- Botones para las elecciones de Usuario -->
+                <button type="button" class="btn-move text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2.5" data-move="rock">
+                    <img src="images/roca.png" alt="Icono de Roca" class="w-5 h-5">
+                </button>
+                <button type="button" class="btn-move text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2.5" data-move="paper">
+                    <img src="images/mano.png" alt="Icono de Papel" class="w-5 h-5">
+                </button>
+                <button type="button" class="btn-move text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm p-2.5" data-move="scissors">
+                    <img src="images/tijera.png" alt="Icono de Tijera" class="w-5 h-5">
+                </button>
+            </div>
+        </div>
+        
+        <!-- Div para Computadora -->
+        <div class="text-center" id="cpu-section">
+            <h1 class="mb-2 text-4xl font-extrabold tracking-tight text-gray-900">Cpu</h1>
+            <img src="images/robot.svg" alt="Imagen de computadora" class="w-32 h-32 mx-auto">
+            <div class="mt-4">
+                <span id="cpu-move" class="text-4xl text-gray-900">paper</span> <!-- Muestra el movimiento de la computadora -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Marcador -->
+    <div class="flex justify-center mt-4">
+        <div class="flex bg-white border-2 border-gray-300 rounded-lg shadow-lg p-4 space-x-10">
+            <!-- Puntaje para Usuario -->
+            <div class="text-center">
+                <h2 class="text-xl font-bold text-gray-700">Jugador</h2>
+                <span class="block text-4xl text-blue-600" id="user-score">0</span>
+            </div>
+            
+            <!-- Línea divisoria -->
+            <div class="border-l-2 border-gray-300 h-full"></div>
+            
+            <!-- Puntaje para Computadora -->
+            <div class="text-center">
+                <h2 class="text-xl font-bold text-gray-700">Computadora</h2>
+                <span class="block text-4xl text-red-600" id="cpu-score">0</span> 
+            </div>
+        </div>
+    </div>
+    
+    <!-- Botón para Reiniciar el Juego -->
+    <div class="flex justify-center mt-6">
+        <button type="button" id="reset-game" class="px-5 py-2.5 bg-blue-700 text-white rounded-lg hover:bg-blue-800">Reiniciar Juego</button>
+    </div>
+    
+
+</html>
+
